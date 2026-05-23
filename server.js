@@ -58,3 +58,34 @@ app.get("/api/books/:id", async (req, res) => {
 });
 
 app.listen(3000, () => console.log("Server running on port 3000"));
+
+app.patch("/api/books/:id", async (req, res) => {
+ try {
+   const { id } = req.params;
+   const updates = req.body;
+   const options = { new: true, runValidators: true };
+
+
+   const updatedBook = await Book.findByIdAndUpdate(id, updates, options);
+   if (!updatedBook) {
+    return res.status(404).json({ error: "Livro não encontrado" });
+   }
+ 
+   res.json(updatedBook);
+ } catch (err) {
+   res.status(500).json({ error: "Erro ao atualizar livro." });
+ }
+});
+
+app.delete("/api/books/:id", async (req, res) => {
+ try {
+   const { id } = req.params;
+   const deletedBook = await Book.findByIdAndDelete(id);
+   if (!deletedBook) {
+     return res.status(404).json({ error: "Livro não encontrado" });
+   }
+   res.json({ message: "Livro excluído com sucesso" });
+ } catch (err) {
+   res.status(500).json({ error: "Erro ao excluir livro" });
+ }
+});
