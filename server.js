@@ -2,8 +2,17 @@ const express = require("express");
 const app = express();
 const connectDB = require("./config/config");
 const Book = require("./models/book");
+
+const bookRoutes = require('./routes/bookRoutes');
+const validateTitle = require("./middlewares/validateTitle");
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./docs/swagger.json');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 connectDB();
 app.use(express.json());
+app.use('/api', bookRoutes);
 app.listen(3000, () => console.log("Server running on port 3000"));
 
 app.get("/divide", (req, res) => {
@@ -20,9 +29,14 @@ app.get("/divide", (req, res) => {
     } catch (err) {
         res.status(400).json({error: err.message });
     }
-})
+});
 
-app.post("/api/books", async (req, res) => {
+app.use((err, req, res, next) => {
+	console.error(err.stack);
+	res.status(500).json({ error: "Ocorreu um erro no servidor." });
+});
+
+app.post("/api/books", validateTitle, async (req, res) => {
  try {
    const { title, author, year, genre } = req.body;
    const newBook = new Book({ title, author, year, genre });
@@ -53,7 +67,8 @@ app.get("/api/books/:id", async (req, res) => {
 
    res.json(book);
  } catch (err) {
-   res.status(500).json({ error: "Erro ao buscar livro" });
+  next(err); // passa o erro para o middleware de tratamento
+   //res.status(500).json({ error: "Erro ao buscar livro" });
  }
 });
 

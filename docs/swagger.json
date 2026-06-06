@@ -1,0 +1,56 @@
+{
+ "swagger": "2.0",
+ "info": {
+   "version": "1.0.0",
+   "title": "Biblioteca Digital API",
+   "description": "Documentação da API da Biblioteca Digital"
+ },
+ "host": "localhost:3000",
+ "basePath": "/api",
+ "schemes": ["http"],
+ "paths": {
+    "/books": {
+        "post": {
+            "summary": "Criar um novo livro",
+            "description": "Adiciona um novo livro à biblioteca digital.",
+            "parameters": [
+                {
+                    "name": "body",
+                    "in": "body",
+                    "description": "Dados do livro a ser criado",
+                    "required": true,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "example": "O senhor dos Anéis"
+                            },
+                            "author": {
+                                "type": "string",
+                                "exemple": "J.R.R. Tolkien"
+                            },
+                            "year": {
+                                "type": "integer",
+                                "example": 1954
+                            },
+                            "genre": {
+                                "type": "string",
+                                "example": "Fantasia"
+                            }
+                        }
+                    }
+                }
+            ],
+            "responses": {
+                "201": {
+                    "description": "Livro criado com sucesso"
+                },
+                "500": {
+                    "description": "Erro interno do servidor"
+                }
+            }
+        }
+    }
+ }
+}
