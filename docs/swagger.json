@@ -50,6 +50,91 @@
                     "description": "Erro interno do servidor"
                 }
             }
+        },
+        "get": {
+            "summary":"Listar todos os livros",
+            "description": "Obtém uma lista de todos os livros disponiveis",
+            "parameters": [
+                {
+                    "name": "title",
+                    "in": "query",
+                    "descrition": "Filtrar por titulo do livro",
+                    "required": false,
+                    "type": "string"
+                },
+                {
+                    "name": "author",
+                    "in": "query",
+                    "descrition": "Filtrar por autor do livro",
+                    "required": false,
+                    "type": "string"
+                },
+                {
+                    "name": "pageNumber",
+                    "in": "query",
+                    "description": "Número da página a ser retornada",
+                    "required": false,
+                    "type": "integer"
+                },
+                {
+                    "name": "pageSize",
+                    "in": "query",
+                    "description": "Quantidade de resultados por página",
+                    "required": false,
+                    "type": "integer"
+                },
+                {
+                    "name": "sortBy",
+                    "in": "query",
+                    "description": "Campo pelo qual os resultados serão ordenados (ex: title, year, author)",
+                    "required": false,
+                    "type": "string"
+                },
+                {
+                    "name": "order",
+                    "in": "query",
+                    "description": "Ordem de classificação: 'asc' para crescente, 'desc' para decrescente",
+                    "required": false,
+                    "type": "string",
+                    "enum": ["asc", "desc"]
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Lista de livros recuperada com sucesso",
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "example": "63dcb0f6e78a1d001f2f6275"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "example":"O senhor dos Anéis"
+                                },
+                                "author": {
+                                    "type": "string",
+                                    "exemple":"J.R.R. Tolkien"
+                                },
+                                "year": {
+                                    "type": "integer",
+                                    "example": 1954
+                                },
+                                "genre": {
+                                    "type": "string",
+                                    "example": "Fantasia"
+                                }
+                            }
+                        }
+                    }
+                },
+                "500": {
+                    "description": "Erro interno do servidor"
+                }
+            }
         }
     }
  }
